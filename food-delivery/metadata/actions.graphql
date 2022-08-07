@@ -5,6 +5,7 @@ type Mutation {
     last_name: String!
     password: String!
     role: String!
+    Phone_Number: String!
   ): SignupOutput
 }
 
@@ -13,7 +14,6 @@ type SignupOutput {
   email: String!
   first_name: String!
   last_name: String!
-  Phone_Number: String!
   password: String!
   role: String!
   token: String!

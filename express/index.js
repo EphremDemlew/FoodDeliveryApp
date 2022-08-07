@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const signup_query = require("./query/signup_query");
-const login_query = require("./queries/login_query");
+const login_query = require("./query/login_query");
 require("dotenv").config();
 
 const app = express();
@@ -47,7 +47,7 @@ const login_execute = async (variables) => {
 // Sign Up Request Handler
 app.post("/signup", async (req, res) => {
   // get request input
-  const { email, first_name, last_name, role } = req.body.input;
+  const { email, first_name, last_name, role, Phone_Number } = req.body.input;
 
   // run some business logic
   const password = await bcrypt.hash(req.body.input.password, 10);
@@ -58,6 +58,7 @@ app.post("/signup", async (req, res) => {
     last_name,
     password,
     role,
+    Phone_Number,
   });
 
   // if Hasura operation errors, then throw error
