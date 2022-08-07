@@ -1,0 +1,2 @@
+CREATE TABLE "public"."Order" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "customer_id" uuid NOT NULL, "deliver_person_phone" text NOT NULL, "customer_location" text NOT NULL, "total_price" money NOT NULL, "menus" text NOT NULL, "is_admin_accepted" boolean NOT NULL, "is_deliver_person_accepted" boolean NOT NULL, "is_delivered" boolean NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("customer_id") REFERENCES "public"."Accounts"("id") ON UPDATE restrict ON DELETE restrict);
+CREATE EXTENSION IF NOT EXISTS pgcrypto;

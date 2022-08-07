@@ -1,0 +1,29 @@
+{
+  "name": "express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EphremDemlew/FoodDeliveryApp.git"
+  },
+  "keywords": [
+    "food",
+    "Delivery"
+  ],
+  "author": "Ephrem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EphremDemlew/FoodDeliveryApp/issues"
+  },
+  "homepage": "https://github.com/EphremDemlew/FoodDeliveryApp#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1"
+  }
+}
