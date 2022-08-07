@@ -1,4 +1,8 @@
 actions:
+  - name: login
+    definition:
+      kind: ""
+      handler: http://localhost:5000/login
   - name: signup
     definition:
       kind: synchronous
@@ -8,4 +12,5 @@ custom_types:
   input_objects: []
   objects:
     - name: SignupOutput
+    - name: LoginOutput
   scalars: []

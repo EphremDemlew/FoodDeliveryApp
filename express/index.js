@@ -134,20 +134,23 @@ app.post("/Login", async (req, res) => {
     return res.status(400).json(errors[0]);
   }
 
-  const validPassword = await bcrypt.compare(password, data.users[0].password);
+  const validPassword = await bcrypt.compare(
+    password,
+    data.Accounts[0].password
+  );
   if (!validPassword)
     return res.status(400).json({ message: "Invalid Email or Password." });
   console.log("The password is " + validPassword);
 
   // token claim for users
   const usertokenContents = {
-    sub: data.users[0].id,
-    name: data.users[0].first_name,
+    sub: data.Accounts[0].id,
+    name: data.Accounts[0].first_name,
     iat: Date.now() / 1000,
     iss: "https://myapp.com/",
     "https://hasura.io/jwt/claims": {
       "x-hasura-allowed-roles": ["user", "anonymous", "author"],
-      "x-hasura-user-id": data.users[0].id,
+      "x-hasura-user-id": data.Accounts[0].id,
       "x-hasura-default-role": "user",
       "x-hasura-role": "user",
     },
@@ -156,13 +159,13 @@ app.post("/Login", async (req, res) => {
 
   // token claim for authors
   const authortokenContents = {
-    sub: data.users[0].id,
-    name: data.users[0].first_name,
+    sub: data.Accounts[0].id,
+    name: data.Accounts[0].first_name,
     iat: Date.now() / 1000,
     iss: "https://myapp.com/",
     "https://hasura.io/jwt/claims": {
       "x-hasura-allowed-roles": ["user", "anonymous", "author"],
-      "x-hasura-user-id": data.users[0].id,
+      "x-hasura-user-id": data.Accounts[0].id,
       "x-hasura-default-role": "author",
       "x-hasura-role": "author",
     },
@@ -170,7 +173,7 @@ app.post("/Login", async (req, res) => {
   };
 
   const token = jwt.sign(
-    data.users[0].isAuthor ? authortokenContents : usertokenContents,
+    data.Accounts[0].isAuthor ? authortokenContents : usertokenContents,
     process.env.HASURA_JWT_SECRET_KEY || "z8pXvFrDjGWb3mRSJBAp9ZljHRnMofLF"
   );
 
@@ -180,7 +183,7 @@ app.post("/Login", async (req, res) => {
 
   // success
   return res.json({
-    ...data.users[0],
+    ...dataAccounts[0],
     token: token,
   });
 });

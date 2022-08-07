@@ -1,3 +1,10 @@
+type Query {
+  login(
+    email: String!
+    password: String!
+  ): LoginOutput
+}
+
 type Mutation {
   signup(
     email: String!
@@ -14,6 +21,15 @@ type SignupOutput {
   email: String!
   first_name: String!
   last_name: String!
+  password: String!
+  role: String!
+  token: String!
+}
+
+type LoginOutput {
+  id: uuid!
+  email: String!
+  first_name: String!
   password: String!
   role: String!
   token: String!
