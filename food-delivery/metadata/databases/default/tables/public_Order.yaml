@@ -5,3 +5,90 @@ object_relationships:
   - name: Account
     using:
       foreign_key_constraint_on: customer_id
+insert_permissions:
+  - role: cutomer
+    permission:
+      check:
+        customer_id:
+          _eq: X-Hasura-User-Id
+      columns:
+        - is_admin_accepted
+        - is_delivered
+        - is_deliver_person_accepted
+        - total_price
+        - customer_location
+        - menus
+        - customer_id
+        - id
+select_permissions:
+  - role: cutomer
+    permission:
+      columns:
+        - is_admin_accepted
+        - is_delivered
+        - is_deliver_person_accepted
+        - total_price
+        - customer_location
+        - menus
+        - customer_id
+        - id
+      filter:
+        customer_id:
+          _eq: X-Hasura-User-Id
+  - role: delivery_person
+    permission:
+      columns:
+        - id
+        - customer_id
+        - customer_location
+        - total_price
+        - menus
+        - is_admin_accepted
+        - is_deliver_person_accepted
+        - is_delivered
+      filter:
+        _and:
+          - is_deliver_person_accepted:
+              _eq: false
+          - Account:
+              id:
+                _eq: X-Hasura-User-Id
+update_permissions:
+  - role: cutomer
+    permission:
+      columns:
+        - is_admin_accepted
+        - is_delivered
+        - is_deliver_person_accepted
+        - total_price
+        - customer_location
+        - menus
+        - customer_id
+        - id
+      filter:
+        customer_id:
+          _eq: X-Hasura-User-Id
+      check:
+        customer_id:
+          _eq: X-Hasura-User-Id
+  - role: delivery_person
+    permission:
+      columns:
+        - is_admin_accepted
+        - is_deliver_person_accepted
+        - is_delivered
+      filter:
+        _and:
+          - is_deliver_person_accepted:
+              _eq: false
+          - Account:
+              id:
+                _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: cutomer
+    permission:
+      backend_only: false
+      filter:
+        customer_id:
+          _eq: X-Hasura-User-Id

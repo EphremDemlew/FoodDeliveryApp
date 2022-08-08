@@ -1,16 +1,29 @@
 actions:
+  - name: adminLogin
+    definition:
+      kind: ""
+      handler: http://localhost:5000/adminLogin
   - name: login
     definition:
       kind: ""
       handler: http://localhost:5000/login
+    permissions:
+      - role: anonymous
+      - role: delivery_person
+      - role: cutomer
   - name: signup
     definition:
       kind: synchronous
       handler: http://localhost:5000/signup
+    permissions:
+      - role: delivery_person
+      - role: cutomer
+      - role: anonymous
 custom_types:
   enums: []
   input_objects: []
   objects:
     - name: SignupOutput
     - name: LoginOutput
+    - name: AdminLoginOutput
   scalars: []

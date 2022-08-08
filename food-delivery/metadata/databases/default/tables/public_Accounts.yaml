@@ -1,3 +1,84 @@
 table:
   name: Accounts
   schema: public
+array_relationships:
+  - name: Orders
+    using:
+      foreign_key_constraint_on:
+        column: customer_id
+        table:
+          name: Order
+          schema: public
+select_permissions:
+  - role: cutomer
+    permission:
+      columns:
+        - id
+        - first_name
+        - last_name
+        - Phone_Number
+        - Balance
+        - role
+        - password
+        - email
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+  - role: delivery_person
+    permission:
+      columns:
+        - id
+        - first_name
+        - last_name
+        - Phone_Number
+        - Balance
+        - role
+        - password
+        - email
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+update_permissions:
+  - role: cutomer
+    permission:
+      columns:
+        - id
+        - first_name
+        - last_name
+        - Phone_Number
+        - Balance
+        - role
+        - password
+        - email
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+  - role: delivery_person
+    permission:
+      columns:
+        - id
+        - first_name
+        - last_name
+        - Phone_Number
+        - Balance
+        - role
+        - password
+        - email
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: cutomer
+    permission:
+      backend_only: false
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+  - role: delivery_person
+    permission:
+      backend_only: false
+      filter:
+        id:
+          _eq: X-Hasura-User-Id

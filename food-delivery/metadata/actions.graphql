@@ -1,4 +1,11 @@
 type Query {
+  adminLogin(
+    email: String!
+    password: String!
+  ): AdminLoginOutput
+}
+
+type Query {
   login(
     email: String!
     password: String!
@@ -32,6 +39,14 @@ type LoginOutput {
   first_name: String!
   password: String!
   role: String!
+  token: String!
+}
+
+type AdminLoginOutput {
+  email: String!
+  first_name: String!
+  id: uuid!
+  last_name: String!
   token: String!
 }
 

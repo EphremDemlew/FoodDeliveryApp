@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const signup_query = require("./query/signup_query");
 const login_query = require("./query/login_query");
+const admin_login_query = require("./query/adminlogin_query");
 require("dotenv").config();
 
 const app = express();
@@ -36,6 +37,20 @@ const login_execute = async (variables) => {
     headers: { "x-hasura-admin-secret": "myadminsecretkey" },
     body: JSON.stringify({
       query: login_query,
+      variables,
+    }),
+  });
+  const data = await fetchResponse.json();
+  console.log("DEBUG: ", data);
+  return data;
+};
+// login query execute
+const admin_login_execute = async (variables) => {
+  const fetchResponse = await fetch("http://localhost:8080/v1/graphql", {
+    method: "POST",
+    headers: { "x-hasura-admin-secret": "myadminsecretkey" },
+    body: JSON.stringify({
+      query: admin_login_query,
       variables,
     }),
   });
@@ -184,6 +199,54 @@ app.post("/Login", async (req, res) => {
   // success
   return res.json({
     ...dataAccounts[0],
+    token: token,
+  });
+});
+// Admin Login Request Handler
+app.post("/adminLogin", async (req, res) => {
+  // get request input
+  const { email, password } = req.body.input;
+
+  const { data, errors } = await admin_login_execute({ email });
+  // if Hasura operation errors, then throw error
+  if (errors) {
+    return res.status(400).json(errors[0]);
+  }
+
+  const validPassword = await bcrypt.compare(
+    password,
+    data.Accounts[0].password
+  );
+  if (!validPassword)
+    return res.status(400).json({ message: "Invalid Email or Password." });
+
+  // token claim for admin users
+  const usertokenContents = {
+    sub: data.Accounts[0].id,
+    name: data.Accounts[0].first_name,
+    iat: Date.now() / 1000,
+    iss: "https://myapp.com/",
+    "https://hasura.io/jwt/claims": {
+      "x-hasura-allowed-roles": ["admin"],
+      "x-hasura-user-id": data.Accounts[0].id,
+      "x-hasura-default-role": "admin",
+      "x-hasura-role": "admin",
+    },
+    exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+  };
+
+  const token = jwt.sign(
+    usertokenContents,
+    process.env.HASURA_JWT_SECRET_KEY || "z8pXvFrDjGWb3mRSJBAp9ZljHRnMofLF"
+  );
+
+  console.log("......................");
+  console.log(token);
+  console.log("......................");
+
+  // success
+  return res.json({
+    ...data.Accounts[0],
     token: token,
   });
 });
