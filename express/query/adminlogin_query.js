@@ -5,8 +5,6 @@ query adminLogin($email: String!){
 		id
     email
     password
-    role
-    first_name
   }
 }
 `;

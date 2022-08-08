@@ -43,10 +43,8 @@ type LoginOutput {
 }
 
 type AdminLoginOutput {
-  email: String!
-  first_name: String!
   id: uuid!
-  last_name: String!
+  email: String!
   token: String!
 }
 

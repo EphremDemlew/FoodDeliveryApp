@@ -240,7 +240,7 @@ app.post("/adminLogin", async (req, res) => {
     process.env.HASURA_JWT_SECRET_KEY || "z8pXvFrDjGWb3mRSJBAp9ZljHRnMofLF"
   );
 
-  console.log("......................");
+  console.log("......................" + data.Accounts[0]);
   console.log(token);
   console.log("......................");
 
