@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const signup_query = require("./query/signup_query");
 const login_query = require("./query/login_query");
 const admin_login_query = require("./query/adminlogin_query");
+const checkOut = require("./query/checkout.js");
 require("dotenv").config();
 
 const app = express();
@@ -251,6 +252,7 @@ app.post("/adminLogin", async (req, res) => {
   });
 });
 
+app.post("/checkout", checkOut);
 const port = process.env.PORT || 5050;
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

@@ -3,6 +3,10 @@ actions:
     definition:
       kind: ""
       handler: http://localhost:5000/adminLogin
+    permissions:
+      - role: anonymous
+      - role: delivery_person
+      - role: cutomer
   - name: login
     definition:
       kind: ""
