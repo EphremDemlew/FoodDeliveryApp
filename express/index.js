@@ -75,8 +75,6 @@ app.post("/signup", async (req, res) => {
     role,
     phone_number,
   });
-  console.log(phone_number);
-  console.log(phone_number);
   // if Hasura operation errors, then throw error
   if (errors) {
     return res.status(400).json(errors[0]);
@@ -137,6 +135,11 @@ app.post("/Login", async (req, res) => {
   if (errors) {
     return res.status(400).json(errors[0]);
   }
+  if (data.Accounts.length === 0) {
+    return res
+      .status(400)
+      .json({ message: "Account not found, Please Sign Up." });
+  }
 
   const validPassword = await bcrypt.compare(
     password,
@@ -191,7 +194,7 @@ app.post("/Login", async (req, res) => {
 
   // success
   return res.json({
-    ...dataAccounts[0],
+    ...data.Accounts[0],
     token: token,
   });
 });
