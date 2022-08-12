@@ -13,28 +13,26 @@ select_permissions:
   - role: cutomer
     permission:
       columns:
-        - id
+        - balance
         - first_name
         - last_name
-        - Phone_Number
-        - Balance
-        - role
         - password
-        - email
+        - phone_number
+        - role
+        - id
       filter:
         id:
           _eq: X-Hasura-User-Id
   - role: delivery_person
     permission:
       columns:
-        - id
+        - balance
         - first_name
         - last_name
-        - Phone_Number
-        - Balance
-        - role
         - password
-        - email
+        - phone_number
+        - role
+        - id
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -42,14 +40,10 @@ update_permissions:
   - role: cutomer
     permission:
       columns:
-        - id
         - first_name
         - last_name
-        - Phone_Number
-        - Balance
-        - role
         - password
-        - email
+        - phone_number
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -57,28 +51,14 @@ update_permissions:
   - role: delivery_person
     permission:
       columns:
-        - id
+        - balance
         - first_name
         - last_name
-        - Phone_Number
-        - Balance
-        - role
         - password
-        - email
+        - phone_number
+        - role
+        - id
       filter:
         id:
           _eq: X-Hasura-User-Id
       check: null
-delete_permissions:
-  - role: cutomer
-    permission:
-      backend_only: false
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
-  - role: delivery_person
-    permission:
-      backend_only: false
-      filter:
-        id:
-          _eq: X-Hasura-User-Id

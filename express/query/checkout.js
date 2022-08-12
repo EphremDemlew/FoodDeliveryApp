@@ -1,12 +1,10 @@
-
 let config = {
-    headers: {
-      Authorization: "Bearer " + CHAPA_SECRET_KEY,
-    },
-  };
-const checkOut = (req , res) => {
-
-    try {
+  headers: {
+    Authorization: "Bearer " + process.env.CHAPA_SECRET_KEY,
+  },
+};
+const checkOut = async (req, res) => {
+  try {
     //TODO: populate from DB
     let tx_ref = "tx-myecommerce12345." + Date.now();
     let result = await axios.postForm(
@@ -26,15 +24,13 @@ const checkOut = (req , res) => {
     );
 
     console.log(result.data);
-//returning back the checkout url to Frontend
+    //returning back the checkout url to Frontend
 
     res.send(result.data);
   } catch (error) {
     console.log(error.data);
     res.send("error message " + error);
   }
-}
+};
 
-
-
-  module.exports = checkOut;
+module.exports = checkOut;

@@ -2,8 +2,7 @@
   kind: postgres
   configuration:
     connection_info:
-      database_url:
-        from_env: PG_DATABASE_URL
+      database_url: postgres://lijpwmpwmqeejn:37420300bfbd234493656c91f8826556c9a8e326ff84b269125d4e4e670b9aed@ec2-18-214-35-70.compute-1.amazonaws.com:5432/d71f9r4apnd3ks
       isolation_level: read-committed
       use_prepared_statements: false
   tables: "!include default/tables/tables.yaml"

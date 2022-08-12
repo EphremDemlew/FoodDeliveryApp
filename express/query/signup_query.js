@@ -1,8 +1,8 @@
 const signup_HASURA_OPERATION = `
-mutation signup($email:String!,$first_name:String!,$last_name:String!,$password:String!,$role:String! , $Phone_Number:String!) {
-  insert_Accounts_one(object: {email: $email, first_name: $first_name, last_name: $last_name, password: $password, role: $role, Phone_Number: $Phone_Number}) {
+mutation signup($first_name:String!,$last_name:String!,$password:String!,$role:String! , $phone_number:String!) {
+  insert_Accounts_one(object: {first_name: $first_name, last_name: $last_name, password: $password, role: $role, phone_number: $phone_number}) {
     id
-    email
+    phone_number
     first_name
     last_name
     password

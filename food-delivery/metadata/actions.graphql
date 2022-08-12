@@ -1,31 +1,30 @@
 type Query {
   adminLogin(
-    email: String!
+    phone_number: String!
     password: String!
   ): AdminLoginOutput
 }
 
 type Query {
   login(
-    email: String!
+    phone_number: String!
     password: String!
   ): LoginOutput
 }
 
 type Mutation {
   signup(
-    email: String!
+    phone_number: String!
     first_name: String!
     last_name: String!
     password: String!
     role: String!
-    Phone_Number: String!
   ): SignupOutput
 }
 
 type SignupOutput {
   id: uuid!
-  email: String!
+  phone_number: String!
   first_name: String!
   last_name: String!
   password: String!
@@ -35,7 +34,7 @@ type SignupOutput {
 
 type LoginOutput {
   id: uuid!
-  email: String!
+  phone_number: String!
   first_name: String!
   password: String!
   role: String!
@@ -44,7 +43,7 @@ type LoginOutput {
 
 type AdminLoginOutput {
   id: uuid!
-  email: String!
+  phone_number: String!
   token: String!
 }
 

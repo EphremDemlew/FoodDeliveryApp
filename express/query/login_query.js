@@ -1,12 +1,12 @@
 // Login Query
 const LOGIN_HASURA_OPERATION = `
-query login($email: String!){
-  Accounts(where: {email: {_eq: $email}}){
+query login($phone_number: String!){
+  Accounts(where: {phone_number: {_eq: $phone_number}}){
 	id
-    email
-    password
-    role
-    first_name
+  phone_number
+  password
+  role
+  first_name
   }
 }
 

@@ -63,71 +63,59 @@ const admin_login_execute = async (variables) => {
 // Sign Up Request Handler
 app.post("/signup", async (req, res) => {
   // get request input
-  const { email, first_name, last_name, role, Phone_Number } = req.body.input;
+  const { first_name, last_name, role, phone_number } = req.body.input;
 
   // run some business logic
   const password = await bcrypt.hash(req.body.input.password, 10);
   // execute the Hasura operation
   const { data, errors } = await signup_execute({
-    email,
     first_name,
     last_name,
     password,
     role,
-    Phone_Number,
+    phone_number,
   });
-
+  console.log(phone_number);
+  console.log(phone_number);
   // if Hasura operation errors, then throw error
   if (errors) {
     return res.status(400).json(errors[0]);
   }
 
-  const tokenContents = {
-    sub: data.insert_Accounts_one.id,
-    name: first_name,
-    iat: Date.now() / 1000,
-    iss: "https://myapp.com/",
-    "https://hasura.io/jwt/claims": {
-      "x-hasura-allowed-roles": ["user", "anonymous", "author"],
-      "x-hasura-user-id": data.insert_Accounts_one.id,
-      "x-hasura-default-role": "user",
-      "x-hasura-role": "user",
-    },
-    exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-  };
-
   // token claim for users
-  const usertokenContents = {
+  const customertokenContents = {
     sub: data.insert_Accounts_one.id,
     name: first_name,
     iat: Date.now() / 1000,
     iss: "https://myapp.com/",
     "https://hasura.io/jwt/claims": {
-      "x-hasura-allowed-roles": ["user", "anonymous", "author"],
+      "x-hasura-allowed-roles": ["customer", "anonymous", "delivery_person"],
       "x-hasura-user-id": data.insert_Accounts_one.id,
-      "x-hasura-default-role": "user",
-      "x-hasura-role": "user",
+      "x-hasura-default-role": "customer",
+      "x-hasura-role": "customer",
     },
     exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
   };
 
   // token claim for authors
-  const authortokenContents = {
+  const delivery_persontokenContents = {
     sub: data.insert_Accounts_one.id,
     name: first_name,
     iat: Date.now() / 1000,
     iss: "https://myapp.com/",
     "https://hasura.io/jwt/claims": {
-      "x-hasura-allowed-roles": ["user", "anonymous", "author"],
+      "x-hasura-allowed-roles": ["customer", "anonymous", "delivery_person"],
       "x-hasura-user-id": data.insert_Accounts_one.id,
-      "x-hasura-default-role": "author",
-      "x-hasura-role": "author",
+      "x-hasura-default-role": "delivery_person",
+      "x-hasura-role": "delivery_person",
     },
     exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
   };
 
   const token = jwt.sign(
-    data.insert_Accounts_one.role ? authortokenContents : usertokenContents,
+    data.insert_Accounts_one.role == "delivery_person"
+      ? delivery_persontokenContents
+      : customertokenContents,
     process.env.HASURA_JWT_SECRET_KEY || "z8pXvFrDjGWb3mRSJBAp9ZljHRnMofLF"
   );
   console.log(data.insert_Accounts_one.role);
@@ -142,9 +130,9 @@ app.post("/signup", async (req, res) => {
 // Login Request Handler
 app.post("/Login", async (req, res) => {
   // get request input
-  const { email, password } = req.body.input;
+  const { phone_number, password } = req.body.input;
 
-  const { data, errors } = await login_execute({ email });
+  const { data, errors } = await login_execute({ phone_number });
   // if Hasura operation errors, then throw error
   if (errors) {
     return res.status(400).json(errors[0]);
@@ -155,41 +143,45 @@ app.post("/Login", async (req, res) => {
     data.Accounts[0].password
   );
   if (!validPassword)
-    return res.status(400).json({ message: "Invalid Email or Password." });
+    return res
+      .status(400)
+      .json({ message: "Invalid Phone Number or Password." });
   console.log("The password is " + validPassword);
 
-  // token claim for users
-  const usertokenContents = {
+  // token claim for customer
+  const customertokenContents = {
     sub: data.Accounts[0].id,
     name: data.Accounts[0].first_name,
     iat: Date.now() / 1000,
     iss: "https://myapp.com/",
     "https://hasura.io/jwt/claims": {
-      "x-hasura-allowed-roles": ["user", "anonymous", "author"],
+      "x-hasura-allowed-roles": ["customer", "anonymous", "delivery_person"],
       "x-hasura-user-id": data.Accounts[0].id,
-      "x-hasura-default-role": "user",
-      "x-hasura-role": "user",
+      "x-hasura-default-role": "customer",
+      "x-hasura-role": "customer",
     },
     exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
   };
 
-  // token claim for authors
-  const authortokenContents = {
+  // token claim for delivery_person
+  const delivery_persontokenContents = {
     sub: data.Accounts[0].id,
     name: data.Accounts[0].first_name,
     iat: Date.now() / 1000,
     iss: "https://myapp.com/",
     "https://hasura.io/jwt/claims": {
-      "x-hasura-allowed-roles": ["user", "anonymous", "author"],
+      "x-hasura-allowed-roles": ["customer", "anonymous", "delivery_person"],
       "x-hasura-user-id": data.Accounts[0].id,
-      "x-hasura-default-role": "author",
-      "x-hasura-role": "author",
+      "x-hasura-default-role": "delivery_person",
+      "x-hasura-role": "delivery_person",
     },
     exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
   };
 
   const token = jwt.sign(
-    data.Accounts[0].isAuthor ? authortokenContents : usertokenContents,
+    data.Accounts[0].role == "delivery_person"
+      ? delivery_persontokenContents
+      : customertokenContents,
     process.env.HASURA_JWT_SECRET_KEY || "z8pXvFrDjGWb3mRSJBAp9ZljHRnMofLF"
   );
 
@@ -206,9 +198,9 @@ app.post("/Login", async (req, res) => {
 // Admin Login Request Handler
 app.post("/adminLogin", async (req, res) => {
   // get request input
-  const { email, password } = req.body.input;
+  const { phone_number, password } = req.body.input;
 
-  const { data, errors } = await admin_login_execute({ email });
+  const { data, errors } = await admin_login_execute({ phone_number });
   // if Hasura operation errors, then throw error
   if (errors) {
     return res.status(400).json(errors[0]);
@@ -222,7 +214,7 @@ app.post("/adminLogin", async (req, res) => {
     return res.status(400).json({ message: "Invalid Email or Password." });
 
   // token claim for admin users
-  const usertokenContents = {
+  const admintokenContents = {
     sub: data.Accounts[0].id,
     name: data.Accounts[0].first_name,
     iat: Date.now() / 1000,
@@ -237,7 +229,7 @@ app.post("/adminLogin", async (req, res) => {
   };
 
   const token = jwt.sign(
-    usertokenContents,
+    admintokenContents,
     process.env.HASURA_JWT_SECRET_KEY || "z8pXvFrDjGWb3mRSJBAp9ZljHRnMofLF"
   );
 
