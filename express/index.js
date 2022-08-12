@@ -138,7 +138,9 @@ app.post("/Login", async (req, res) => {
   if (data.Accounts.length === 0) {
     return res
       .status(400)
-      .json({ message: "Account not found, Please Sign Up." });
+      .json({
+        message: "Invalid Password or Phone Number or , Please try again.",
+      });
   }
 
   const validPassword = await bcrypt.compare(
@@ -207,6 +209,9 @@ app.post("/adminLogin", async (req, res) => {
   // if Hasura operation errors, then throw error
   if (errors) {
     return res.status(400).json(errors[0]);
+  }
+  if (data.Accounts.length === 0) {
+    return res.status(400).json({ message: "Incorrect cridentials." });
   }
 
   const validPassword = await bcrypt.compare(
