@@ -5,3 +5,56 @@ object_relationships:
   - name: Account
     using:
       foreign_key_constraint_on: customer_id
+insert_permissions:
+  - role: cutomer
+    permission:
+      check: {}
+      columns:
+        - created_at
+        - customer_location
+        - menus
+        - total_price
+        - updated_at
+select_permissions:
+  - role: cutomer
+    permission:
+      columns:
+        - created_at
+        - customer_location
+        - menus
+        - total_price
+        - updated_at
+      filter: {}
+  - role: delivery_person
+    permission:
+      columns:
+        - created_at
+        - customer_location
+        - menus
+        - total_price
+        - updated_at
+      filter: {}
+update_permissions:
+  - role: cutomer
+    permission:
+      columns:
+        - created_at
+        - customer_location
+        - is_delivered
+        - menus
+        - total_price
+        - updated_at
+      filter: {}
+      check: null
+  - role: delivery_person
+    permission:
+      columns:
+        - deliver_person_phone
+        - is_deliver_person_accepted
+      filter: {}
+      check: {}
+delete_permissions:
+  - role: cutomer
+    permission:
+      backend_only: false
+      filter: {}

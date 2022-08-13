@@ -136,11 +136,9 @@ app.post("/Login", async (req, res) => {
     return res.status(400).json(errors[0]);
   }
   if (data.Accounts.length === 0) {
-    return res
-      .status(400)
-      .json({
-        message: "Invalid Password or Phone Number or , Please try again.",
-      });
+    return res.status(400).json({
+      message: "Invalid Password or Phone Number or , Please try again.",
+    });
   }
 
   const validPassword = await bcrypt.compare(
@@ -253,6 +251,7 @@ app.post("/adminLogin", async (req, res) => {
 });
 
 app.post("/checkout", checkOut);
+
 const port = process.env.PORT || 5050;
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

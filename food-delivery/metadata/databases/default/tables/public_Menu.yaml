@@ -1,3 +1,34 @@
 table:
   name: Menu
   schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - is_available
+        - price
+        - description
+        - image_url
+        - ingredients
+        - name
+        - created_at
+        - updated_at
+        - id
+      filter: {}
+  - role: cutomer
+    permission:
+      columns:
+        - is_available
+        - price
+        - description
+        - image_url
+        - ingredients
+        - name
+        - created_at
+        - updated_at
+        - id
+      filter: {}
+  - role: delivery_person
+    permission:
+      columns: []
+      filter: {}
