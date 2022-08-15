@@ -10,6 +10,19 @@ array_relationships:
           name: Order
           schema: public
 select_permissions:
+  - role: customer
+    permission:
+      columns:
+        - balance
+        - first_name
+        - last_name
+        - password
+        - phone_number
+        - role
+        - id
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
   - role: cutomer
     permission:
       columns:
@@ -37,13 +50,30 @@ select_permissions:
         id:
           _eq: X-Hasura-User-Id
 update_permissions:
-  - role: cutomer
+  - role: customer
     permission:
       columns:
+        - balance
         - first_name
         - last_name
         - password
         - phone_number
+        - role
+        - id
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+  - role: cutomer
+    permission:
+      columns:
+        - balance
+        - first_name
+        - last_name
+        - password
+        - phone_number
+        - role
+        - id
       filter:
         id:
           _eq: X-Hasura-User-Id

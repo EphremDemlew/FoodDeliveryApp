@@ -4,6 +4,7 @@ actions:
       kind: ""
       handler: http://localhost:5000/adminLogin
     permissions:
+      - role: customer
       - role: anonymous
       - role: delivery_person
       - role: cutomer
@@ -12,6 +13,7 @@ actions:
       kind: ""
       handler: http://localhost:5000/login
     permissions:
+      - role: customer
       - role: anonymous
       - role: delivery_person
       - role: cutomer
@@ -20,6 +22,7 @@ actions:
       kind: synchronous
       handler: http://localhost:5000/signup
     permissions:
+      - role: customer
       - role: delivery_person
       - role: cutomer
       - role: anonymous

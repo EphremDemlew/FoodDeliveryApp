@@ -15,7 +15,7 @@ select_permissions:
         - updated_at
         - id
       filter: {}
-  - role: cutomer
+  - role: customer
     permission:
       columns:
         - is_available
@@ -27,7 +27,9 @@ select_permissions:
         - created_at
         - updated_at
         - id
-      filter: {}
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
   - role: delivery_person
     permission:
       columns: []
